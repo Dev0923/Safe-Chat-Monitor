@@ -1,0 +1,60 @@
+services:
+  - type: web
+    name: safe-chat-monitor-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    branch: main
+    autoDeployTrigger: commit
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: "86400000"
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_API_URL
+        value: https://openrouter.ai/api/v1/chat/completions
+      - key: AI_MODEL
+        value: openai/gpt-3.5-turbo
+      - key: MAIL_HOST
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+
+  - type: web
+    name: safe-chat-monitor-frontend
+    runtime: static
+    rootDir: frontend
+    branch: main
+    autoDeployTrigger: commit
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
