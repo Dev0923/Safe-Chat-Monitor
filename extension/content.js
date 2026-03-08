@@ -4,7 +4,7 @@
 console.log("Safety Monitor Extension: Content script loaded. Chat monitoring active.");
 
 // Configuration
-const API_URL = "http://localhost:8080/api/messages/extension";
+const API_URL = "https://safe-chat-monitor-backend.onrender.com/api/messages/extension";
 const MIN_MESSAGE_LENGTH = 5;
 const DEBOUNCE_DELAY = 2000; // 2 seconds after user stops typing
 

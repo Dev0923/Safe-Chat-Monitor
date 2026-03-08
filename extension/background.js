@@ -1,5 +1,5 @@
 // The backend URL where activity logs are sent
-const API_URL = "http://localhost:8080/api/activity";
+const API_URL = "https://safe-chat-monitor-backend.onrender.com/api/activity";
 
 // Website categorization and risk assessment
 const categorizeWebsite = (domain, url) => {
