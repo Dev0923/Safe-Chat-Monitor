@@ -2,6 +2,7 @@ import express from 'express';
 import { body, validationResult } from 'express-validator';
 import * as authService from '../services/authenticationService.js';
 import { authMiddleware } from '../middleware/auth.js';
+import { Child } from '../models/index.js';
 
 const router = express.Router();
 
@@ -86,13 +87,19 @@ router.put('/password', authMiddleware, async (req, res) => {
 });
 
 // Validate token endpoint
-router.get('/validate-token', authMiddleware, (req, res) => {
+router.get('/validate-token', authMiddleware, async (req, res) => {
+  let childId = null;
+  if (req.user.role === 'CHILD') {
+    const child = await Child.findOne({ userId: req.user.id }).lean();
+    if (child) childId = child._id.toString();
+  }
   res.json({ 
     success: true, 
     message: 'Token is valid',
     id: req.user.id,
     email: req.user.email,
     role: 'ROLE_' + req.user.role, // Add ROLE_ prefix for frontend compatibility
+    childId,
   });
 });
 

@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Shield, Bell, AlertTriangle, Settings, LogOut, Menu, MessageSquare, Users, Chrome, X, CheckCircle, Copy, BookOpen, Link } from 'lucide-react'
 import useAuthStore from '../store/authStore'
-import { alertAPI } from '../services/api'
+import { alertAPI, authAPI } from '../services/api'
 
 // Child-specific panel components
 import SafeChatPanel            from '../components/child/SafeChatPanel'
@@ -51,7 +51,7 @@ const PageContent = ({ activeNav }) => {
 /* ═══════════════════════════════════════════════════════════════════════════ */
 const ChildDashboard = () => {
   const navigate = useNavigate()
-  const { user, logout } = useAuthStore()
+  const { user, logout, setUser } = useAuthStore()
 
   const [activeNav,   setActiveNav]   = useState('chat')
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -70,6 +70,19 @@ const ChildDashboard = () => {
         setNotifCount(unresolved.length)
       })
       .catch(() => { setAlertCount(0); setNotifCount(0) })
+  }, [])
+
+  // If childId is missing (stale session before parent linked account), refresh it
+  useEffect(() => {
+    if (!user?.childId) {
+      authAPI.validateToken()
+        .then(res => {
+          if (res.data?.childId) {
+            setUser({ ...user, childId: res.data.childId })
+          }
+        })
+        .catch(() => {})
+    }
   }, [])
 
   // Show extension modal on first login (once per session)
