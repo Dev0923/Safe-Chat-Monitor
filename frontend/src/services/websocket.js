@@ -18,7 +18,11 @@ export const connectWebSocket = (newUserId, newToken, onMessage) => {
   onMessageCallback = onMessage
   isManualDisconnect = false
   
-  const wsUrl = `ws://localhost:8080/ws`
+  // Use production WebSocket URL from environment variable
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api'
+  const wsProtocol = apiUrl.startsWith('https') ? 'wss' : 'ws'
+  const wsBaseUrl = apiUrl.replace(/^https?:\/\//, '').replace('/api', '')
+  const wsUrl = `${wsProtocol}://${wsBaseUrl}/ws`
   
   try {
     websocket = new WebSocket(wsUrl)
