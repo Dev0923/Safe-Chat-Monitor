@@ -13,7 +13,7 @@ import { alertAPI, childAPI } from '../services/api'
 import { connectWebSocket, disconnectWebSocket } from '../services/websocket'
 import AlertsPanel       from '../components/dashboard/AlertsPanel'
 import ChildrenPanel     from '../components/dashboard/ChildrenPanel'
-import ActivityLogsPanel from '../components/dashboard/ActivityLogsPanel'
+import ComingSoonPanel from '../components/dashboard/ComingSoonPanel'
 import BrowsingActivityPanel from '../components/dashboard/BrowsingActivityPanel'
 import NotificationsPanel from '../components/dashboard/NotificationsPanel'
 import SettingsPanel     from '../components/dashboard/SettingsPanel'
@@ -367,7 +367,9 @@ const ParentDashboard = () => {
           {/* ── Panel Router ── */}
           {activeNav === 'Alerts'        && <AlertsPanel />}
           {activeNav === 'Children'      && <ChildrenPanel children={children} onChildrenChange={fetchChildren} />}
-          {activeNav === 'Activity Logs' && <ActivityLogsPanel />}          {activeNav === 'Browsing Activity' && <BrowsingActivityPanel />}          {activeNav === 'Notifications' && <NotificationsPanel />}
+          {activeNav === 'Activity Logs' && <ComingSoonPanel />}
+          {activeNav === 'Browsing Activity' && <BrowsingActivityPanel />}
+          {activeNav === 'Notifications' && <NotificationsPanel />}
           {activeNav === 'Settings'      && <SettingsPanel />}
 
           {/* ── Dashboard Overview (default) ── */}
